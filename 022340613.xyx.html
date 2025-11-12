@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matplotlib 可视化示例 - 022340613.xyz</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft YaHei', sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { color: #333; margin-bottom: 10px; }
+        .domain { background: #e74c3c; color: white; padding: 8px 20px; border-radius: 20px; display: inline-block; }
+        .chart-section { margin-bottom: 50px; }
+        .chart-title { color: #333; font-size: 1.5em; margin-bottom: 20px; text-align: center; }
+        .chart-container { position: relative; height: 400px; border: 1px solid #ddd; border-radius: 5px; padding: 20px; }
+        .chart-wrapper { width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Matplotlib 可视化示例</h1>
+            <div class="domain">https://022340613.xyz/visualization</div>
+            <p>基于Jupyter Notebook的五个数据可视化示例</p >
+        </div>
+        
+        <!-- 例1：图书采购情况 -->
+        <div class="chart-section">
+            <div class="chart-title">例一：地区图书采购情况柱状图</div>
+            <div class="chart-container">
+                <canvas id="bookChart" class="chart-wrapper" width="1098" height="358" style="display: block; box-sizing: border-box; height: 358px; width: 1098px;"></canvas>
+            </div>
+        </div>
+        
+        <!-- 例2：汇率走势 -->
+        <div class="chart-section">
+            <div class="chart-title">例二：美元/人民币汇率走势</div>
+            <div class="chart-container">
+                <canvas id="exchangeChart" class="chart-wrapper" width="1098" height="358" style="display: block; box-sizing: border-box; height: 358px; width: 1098px;"></canvas>
+            </div>
+        </div>
+        
+        <!-- 例3：产品销售额 -->
+        <div class="chart-section">
+            <div class="chart-title">例三：不同产品各季度销售额</div>
+            <div class="chart-container">
+                <canvas id="salesChart" class="chart-wrapper" width="1098" height="358" style="display: block; box-sizing: border-box; height: 358px; width: 1098px;"></canvas>
+            </div>
+        </div>
+        
+        <!-- 例4：气温走势 -->
+        <div class="chart-section">
+            <div class="chart-title">例四：未来15天最高/最低气温走势</div>
+            <div class="chart-container">
+                <canvas id="temperatureChart" class="chart-wrapper" width="1098" height="358" style="display: block; box-sizing: border-box; height: 358px; width: 1098px;"></canvas>
+            </div>
+        </div>
+        
+        <!-- 例5：雪花多边形 -->
+        <div class="chart-section">
+            <div class="chart-title">例五：彩色雪花多边形（科赫雪花）</div>
+            <div class="chart-container">
+                <canvas id="snowflakeChart" class="chart-wrapper" width="600" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- 修复：使用CDN加载Chart.js，确保全球可访问 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // 等待页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('开始初始化图表...');
+            
+            // 检查Chart.js是否加载成功
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js未正确加载');
+                alert('图表库加载失败，请刷新页面重试');
+                return;
+            }
+            
+            // 例1: 图书采购情况
+            try {
+                const bookCtx = document.getElementById('bookChart');
+                if (bookCtx) {
+                    new Chart(bookCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['家庭', '小说', '心理', '科技', '儿童'],
+                            datasets: [
+                                {
+                                    label: '地区1',
+                                    data: [1200, 2400, 1800, 2200, 1600],
+                                    backgroundColor: '#FFCC00',
+                                    borderColor: '#FFCC00',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: '地区2',
+                                    data: [1050, 2100, 1300, 1600, 1340],
+                                    backgroundColor: '#B0C4DE',
+                                    borderColor: '#B0C4DE',
+                                    borderWidth: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { beginAtZero: true }
+                            }
+                        }
+                    });
+                    console.log('例1图表创建成功');
+                }
+            } catch (error) {
+                console.error('例1图表创建失败:', error);
+            }
+            // 例2: 汇率走势
+            try {
+                const exchangeCtx = document.getElementById('exchangeChart');
+                if (exchangeCtx) {
+                    new Chart(exchangeCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '17', '18', '19', '24', '25', '26', '31'],
+                            datasets: [
+                                {
+                                    label: '2017年7月美元/人民币汇率',
+                                    data: [6.8007, 6.8007, 6.8015, 6.8015, 6.8060, 6.8060, 6.8060, 6.8036, 6.8025, 6.7877, 6.7835, 6.7758, 6.7700, 6.7463, 6.7519, 6.7511, 6.7511, 6.7539, 6.7265],
+                                    borderColor: '#006374',
+                                    borderWidth: 2,
+                                    fill: false
+                                },
+                                {
+                                    label: '2019年7月美元/人民币汇率',
+                                    data: [6.8640, 6.8705, 6.8697, 6.8697, 6.8697, 6.8881, 6.8853, 6.8856, 6.8677, 6.8662, 6.8662, 6.8662, 6.8827, 6.8761, 6.8635, 6.8860, 6.8737, 6.8796, 6.8841],
+                                    borderColor: '#8a2e76',
+                                    borderWidth: 2,
+                                    borderDash: [10, 5],
+                                    fill: false
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                    console.log('例2图表创建成功');
+                }
+            } catch (error) {
+                console.error('例2图表创建失败:', error);
+            }
+            // 例3: 产品销售额
+            try {
+                const salesCtx = document.getElementById('salesChart');
+                if (salesCtx) {
+                    new Chart(salesCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['第1季度', '第2季度', '第3季度', '第4季度'],
+                            datasets: [
+                                {
+                                    label: '产品A',
+                                    data: [2144, 4617, 7674, 6666],
+                                    borderColor: '#e74c3c',
+                                    borderWidth: 2,
+                                    pointStyle: 'diamond',
+                                    pointRadius: 8
+                                },
+                                {
+                                    label: '产品B',
+                                    data: [853, 1214, 2414, 4409],
+                                    borderColor: '#3498db',
+                                    borderWidth: 2,
+                                    borderDash: [5, 5],
+                                    pointStyle: 'triangle',
+                                    pointRadius: 8
+                                },
+                                {
+                                    label: '产品C',
+                                    data: [153, 155, 292, 680],
+                                    borderColor: '#2ecc71',
+                                    borderWidth: 2,
+                                    borderDash: [2, 2],
+                                    pointStyle: 'rect',
+                                    pointRadius: 8
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { beginAtZero: true }
+                            }
+                        }
+                    });
+                    console.log('例3图表创建成功');
+                }
+            } catch (error) {
+                console.error('例3图表创建失败:', error);
+            }
+            // 例4: 气温走势
+            try {
+                const tempCtx = document.getElementById('temperatureChart');
+                if (tempCtx) {
+                    new Chart(tempCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'],
+                            datasets: [
+                                {
+                                    label: '最高温度',
+                                    data: [32, 33, 34, 34, 33, 31, 30, 29, 30, 29, 26, 23, 21, 25, 31],
+                                    borderColor: '#e74c3c',
+                                    borderWidth: 2,
+                                    pointRadius: 6
+                                },
+                                {
+                                    label: '最低温度',
+                                    data: [19, 19, 20, 22, 22, 21, 22, 16, 18, 18, 17, 14, 15, 16, 16],
+                                    borderColor: '#3498db',
+                                    borderWidth: 2,
+                                    pointRadius: 6
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { beginAtZero: true, max: 40 }
+                            }
+                        }
+                    });
+                    console.log('例4图表创建成功');
+                }
+            } catch (error) {
+                console.error('例4图表创建失败:', error);
+            }
+            // 例5: 雪花多边形 - 使用Canvas绘制
+            try {
+                const snowflakeCtx = document.getElementById('snowflakeChart');
+                if (snowflakeCtx) {
+                    const ctx = snowflakeCtx.getContext('2d');
+                    
+                    // 简单的雪花绘制
+                    function drawSnowflake() {
+                        const width = snowflakeCtx.width = 600;
+                        const height = snowflakeCtx.height = 400;
+                        
+                        ctx.clearRect(0, 0, width, height);
+                        
+                        // 绘制六边形雪花
+                        ctx.beginPath();
+                        ctx.moveTo(300, 100);
+                        
+                        for (let i = 0; i < 6; i++) {
+                            const angle = (Math.PI * 2 * i) / 6;
+                            const x = 300 + 80 * Math.cos(angle);
+                            const y = 200 + 80 * Math.sin(angle);
+                            ctx.lineTo(x, y);
+                        }
+                        
+                        ctx.closePath();
+                        ctx.fillStyle = 'lightsalmon';
+                        ctx.strokeStyle = 'orangered';
+                        ctx.lineWidth = 3;
+                        ctx.fill();
+                        ctx.stroke();
+                    }
+                    
+                    drawSnowflake();
+                    console.log('例5图表创建成功');
+                }
+            } catch (error) {
+                console.error('例5图表创建失败:', error);
+            }
+            
+            console.log('所有图表初始化完成');
+        });
+    </script>
+</body>
+</html>
